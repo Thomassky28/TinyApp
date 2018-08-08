@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TinyApp</title>
+</head>
+<header>
+  <% inclede ./partials/_header %>
+</header>
+<body>
+    <ul>
+      <% for ( id in urls ) { %>
+      <li>
+        <h3> <%= id %> : <%= urls[id] %> </h3>
+      </li>
+      <% }; %>
+    </ul>
+    <a href= "#"> shorten the url </a><!-- Add your EJS code here -->
+</body>
+</html>
