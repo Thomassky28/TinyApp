@@ -3,6 +3,8 @@ var app = express();
 var PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
+var cookieParser = require('cookie-parser')
+app.use(cookieParser())
 
 
 app.set("view engine", "ejs");
@@ -28,7 +30,8 @@ app.get("/hello", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase };
+  req.cookies.username
+  let templateVars = { urls: urlDatabase, username: req.cookies.username };
   res.render("urls_index", templateVars);
 });
 
@@ -94,4 +97,12 @@ app.post("/urls/:id", (req, res) => {
   urlDatabase [id] = req.body.longURL
   res.redirect("/urls")
 })
+
+app.post("/login", (req,res) => {
+  res.cookie("username", req.body.username, { maxAge: 10* 60 * 1000})
+console.log(req.body.username)
+  res.redirect("/urls")
+
+})
+
 
