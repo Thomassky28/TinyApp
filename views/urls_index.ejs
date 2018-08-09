@@ -11,6 +11,9 @@
       <% for ( id in urls ) { %>
       <li>
         <h3> <%= id %> : <%= urls[id] %> </h3>
+        <form method="POST" action="/urls/<%= id %>/delete">
+          <button type = "submit">DELETE</button>
+        </form>
       </li>
       <% }; %>
     </ul>
