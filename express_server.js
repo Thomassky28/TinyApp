@@ -106,6 +106,12 @@ console.log(req.body.username)
 
 })
 
+app.post("/logout", (req,res) => {
+res.cookie("username", req.body.username, { maxAge: 10* 60 * 1000})
+ res.clearCookie('username');
+  res.redirect("/urls")
+
+ })
 // let templateVars = {
 //   username: req.cookies["username"],
 //   // ... any other vars

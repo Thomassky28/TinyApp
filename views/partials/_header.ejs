@@ -5,12 +5,16 @@
 
 <body>
 
-
+  <% if (username) { %>
+    Hello! <%= username %> <form method="POST" action="/logout">
+     <input type = "submit" value = "logout" />
+     </form>
+  <% } else { %>
      <form method="POST" action="/login">
      name<input type= "text" name = "username" >
      <input type = "submit" value = "sign in" /> Hello! <%= username %>
      </form>
-
+     <% } %>
 </body>
 </html>
 
