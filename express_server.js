@@ -30,20 +30,21 @@ app.get("/hello", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  req.cookies.username
+  //req.cookies.username
   let templateVars = { urls: urlDatabase, username: req.cookies.username };
   res.render("urls_index", templateVars);
 });
 
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  let templateVars = {username: req.cookies["username"]};
+  res.render("urls_new",templateVars);
 });
 
 
 app.get("/urls/:id", (req, res) => {
   let templateVars = {
     shortURL: req.params.id,
-    longURL: urlDatabase[req.params.id] };
+    longURL: urlDatabase[req.params.id], username: req.cookies["username"]};
   res.render("urls_show", templateVars);
 });
 
@@ -54,7 +55,7 @@ app.post("/urls", (req, res) => {
   let longURL=req.body.longURL;
 
   urlDatabase[shortURL]=longURL;
-  let templateVars = { urls: urlDatabase };
+  let templateVars = { urls: urlDatabase, username: req.cookies["username"]};
   res.render("urls_index",templateVars);
 
   res.send("Ok");         // Respond with 'Ok' (we will replace this)
@@ -88,7 +89,7 @@ app.get("/u/:shortURL", (req, res) => {
 
 app.post("/urls/:id/delete", (req, res) => {
   delete urlDatabase[req.params.id];
-  let templateVars = { urls: urlDatabase };
+  let templateVars = { urls: urlDatabase, username: req.cookies["username"] };
   res.render("urls_index",templateVars);
 });
 
@@ -104,5 +105,20 @@ console.log(req.body.username)
   res.redirect("/urls")
 
 })
+
+// let templateVars = {
+//   username: req.cookies["username"],
+//   // ... any other vars
+// };
+// res.render("urls_index", templateVars);
+
+// app.post("/", (req, res) => {
+//   if () {
+
+//   } else {
+
+//   };
+// })
+
 
 
