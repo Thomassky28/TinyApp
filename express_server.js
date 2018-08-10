@@ -110,21 +110,74 @@ app.post("/logout", (req,res) => {
 res.cookie("username", req.body.username, { maxAge: 10* 60 * 1000})
  res.clearCookie('username');
   res.redirect("/urls")
+})
 
- })
-// let templateVars = {
-//   username: req.cookies["username"],
-//   // ... any other vars
-// };
-// res.render("urls_index", templateVars);
+// User Registration Task 2
+app.get("/register", (req, res) => {
 
-// app.post("/", (req, res) => {
-//   if () {
+  res.render("register");
+});
 
-//   } else {
 
-//   };
-// })
+
+// task 3
+const users = {
+  "userRandomID": {
+    id: "userRandomID",
+    email: "user@example.com",
+    password: "purple-monkey-dinosaur"
+  },
+ "user2RandomID": {
+    id: "user2RandomID",
+    email: "user2@example.com",
+    password: "dishwasher-funk"
+  }
+}
+
+//task 4
+
+ app.post("/register", (req,res) => {
+  console.log(req.body)
+  const idPut = generateRandomString()
+  const emailPut = req.body.email
+  const passwordPut = req.body.password
+
+
+  var arr = [];
+  for (var key in users) {
+        arr.push(users[key].email);
+    }
+
+
+  users[idPut] = {id: idPut, email: emailPut, password:passwordPut }
+  console.log(users);
+
+  res.cookie("user_id", req.body.user_id, { maxAge: 10* 60 * 1000});
+  if (emailPut === "" || passwordPut === "" ){
+   res.status(400);
+  } else if (
+    arr.forEach(function(elment){
+      emailPut === elment;
+      return true;
+    })
+){
+   res.status(400)
+  } else {
+
+  res.redirect("/urls")};
+
+})
+
+//task 7: creat a login page
+
+app.get("/login", (req, res) => {
+
+  res.render("login");
+});
+
+
+
+
 
 
 
