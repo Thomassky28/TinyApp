@@ -124,7 +124,7 @@ app.post("/login", (req,res) => {
     //   res.status(403).send("password is incorrect" );
     // } else {
 
-  res.status(403).send("email is not found!");
+  res.status(403).send("email/password is not found!");
   //res.sendStatus(403);}
   // fix
 
@@ -132,7 +132,7 @@ app.post("/login", (req,res) => {
 
 app.post("/logout", (req,res) => {
 // res.cookie("username", req.body.username, { maxAge: 10* 60 * 1000})
- res.clearCookie('username');
+ res.clearCookie('user_id');
   res.redirect("/urls")
 })
 
