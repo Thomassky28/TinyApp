@@ -111,10 +111,22 @@ app.post("/urls/:id", (req, res) => {
 })
 
 app.post("/login", (req,res) => {
+  console.log(req.body.email, req.body.password);
+
+  for(var user in users) {
+    if ((req.body.email === users[user].email) && (req.body.password === users[user].password)) {
+      res.cookie("user_id", users[user].id, { maxAge: 10* 60 * 1000});
+      res.redirect("/");
+      return;
+    }
+  }
+    // else if ((req.body.email === user.email) && (req.body.password !== user.password)) {
+    //   res.status(403).send("password is incorrect" );
+    // } else {
+
+  res.status(403).send("email is not found!");
+  //res.sendStatus(403);}
   // fix
-  res.cookie("username", req.body.username, { maxAge: 10* 60 * 1000})
-console.log(req.body.username)
-  res.redirect("/urls")
 
 })
 
