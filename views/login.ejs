@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
- <H3>TinyApp</H3>
+
 
 <body>
 
-  <% if (username) { %>
-    Hello! <%= username %> <form method="POST" action="/logout">
-     <input type = "submit" value = "logout" />
+
+     <form method="POST" action="/register">
+     email:    <input type= "email" name = "email" >
+     password: <input type= "password" name = "password">
+     <button type = "submit" /> submit</button>
      </form>
-  <% } else { %>
-     <form method="POST" action="/login">
-     name<input type= "text" name = "username" >
-     <input type = "submit" value = "sign in" /> Hello! <%= username %>
-     </form>
-     <% } %>
+
 </body>
 </html>

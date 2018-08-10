@@ -4,15 +4,17 @@
  <H3>TinyApp</H3>
 
 <body>
+    <!-- <input type = "submit" value = "Register" />
+    <input type = "submit" value = "Login" /> -->
 
-  <% if (username) { %>
-    Hello! <%= username %> <form method="POST" action="/logout">
+    <% if (user) { %>
+    Hello! <%= user.id %> <form method="POST" action="/logout">
      <input type = "submit" value = "logout" />
      </form>
   <% } else { %>
      <form method="POST" action="/login">
      name<input type= "text" name = "username" >
-     <input type = "submit" value = "sign in" /> Hello! <%= username %>
+     <input type = "submit" value = "sign in" /> Hello!
      </form>
      <% } %>
 </body>

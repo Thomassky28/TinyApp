@@ -30,13 +30,22 @@ app.get("/hello", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
+  console.log("cookies: ", req.cookies)
+  console.log("users", users)
   //req.cookies.username
-  let templateVars = { urls: urlDatabase, username: req.cookies.username };
+  let templateVars = {
+    urls: urlDatabase,
+    //username: req.cookies.username,
+    user: users[req.cookies.user_id]
+  };
+
   res.render("urls_index", templateVars);
+
 });
 
 app.get("/urls/new", (req, res) => {
-  let templateVars = {username: req.cookies["username"]};
+  let templateVars = {user: users[req.cookies.user_id]};
+  console.log("templatevars", templateVars);
   res.render("urls_new",templateVars);
 });
 
@@ -44,7 +53,9 @@ app.get("/urls/new", (req, res) => {
 app.get("/urls/:id", (req, res) => {
   let templateVars = {
     shortURL: req.params.id,
-    longURL: urlDatabase[req.params.id], username: req.cookies["username"]};
+    longURL: urlDatabase[req.params.id],
+    user: users[req.cookies.user_id]
+  };
   res.render("urls_show", templateVars);
 });
 
@@ -55,7 +66,7 @@ app.post("/urls", (req, res) => {
   let longURL=req.body.longURL;
 
   urlDatabase[shortURL]=longURL;
-  let templateVars = { urls: urlDatabase, username: req.cookies["username"]};
+  let templateVars = { urls: urlDatabase, user: users[req.cookies.user_id]};
   res.render("urls_index",templateVars);
 
   res.send("Ok");         // Respond with 'Ok' (we will replace this)
@@ -89,7 +100,7 @@ app.get("/u/:shortURL", (req, res) => {
 
 app.post("/urls/:id/delete", (req, res) => {
   delete urlDatabase[req.params.id];
-  let templateVars = { urls: urlDatabase, username: req.cookies["username"] };
+  let templateVars = { urls: urlDatabase, user: users[req.cookies.user_id] };
   res.render("urls_index",templateVars);
 });
 
@@ -100,6 +111,7 @@ app.post("/urls/:id", (req, res) => {
 })
 
 app.post("/login", (req,res) => {
+  // fix
   res.cookie("username", req.body.username, { maxAge: 10* 60 * 1000})
 console.log(req.body.username)
   res.redirect("/urls")
@@ -107,7 +119,7 @@ console.log(req.body.username)
 })
 
 app.post("/logout", (req,res) => {
-res.cookie("username", req.body.username, { maxAge: 10* 60 * 1000})
+// res.cookie("username", req.body.username, { maxAge: 10* 60 * 1000})
  res.clearCookie('username');
   res.redirect("/urls")
 })
@@ -120,7 +132,7 @@ app.get("/register", (req, res) => {
 
 
 
-// task 3
+// task 3------------------------------------------------------
 const users = {
   "userRandomID": {
     id: "userRandomID",
@@ -134,7 +146,7 @@ const users = {
   }
 }
 
-//task 4
+//task 4--------------------------------------------------------
 
  app.post("/register", (req,res) => {
   console.log(req.body)
@@ -152,7 +164,7 @@ const users = {
   users[idPut] = {id: idPut, email: emailPut, password:passwordPut }
   console.log(users);
 
-  res.cookie("user_id", req.body.user_id, { maxAge: 10* 60 * 1000});
+  res.cookie("user_id", idPut, { maxAge: 10* 60 * 1000});
   if (emailPut === "" || passwordPut === "" ){
    res.status(400);
   } else if (
@@ -167,7 +179,7 @@ const users = {
   res.redirect("/urls")};
 
 })
-
+//-----------------------------------------------------
 //task 7: creat a login page
 
 app.get("/login", (req, res) => {
