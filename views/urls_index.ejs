@@ -11,13 +11,15 @@
     <ul>
       <% for ( id in urls ) { %>
       <li>
-        <h3> <%= id %> : <%= urls[id] %> </h3>
-        <form method="POST" action="/urls/<%= id %>/delete">
+        <h3> <%= id %> : <%= urls[id]["longUrl"] %> </h3>
+        <a href= "/urls/<%= id %>"> Edit </a> <form method="POST" action="/urls/<%= id %>/delete">
           <button type = "submit">DELETE</button>
+        </form>
+
         </form>
       </li>
       <% }; %>
     </ul>
-    <a href= "#"> shorten the url </a><!-- Add your EJS code here -->
+    <a href= "/urls/new"> Shorten the Url </a><!-- Add your EJS code here -->
 </body>
 </html>

@@ -10,8 +10,14 @@ app.use(cookieParser())
 app.set("view engine", "ejs");
 
 var urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "b2xVn2": {
+    "longUrl": "http://www.lighthouselabs.ca",
+    "userID": "userRandomID"
+  },
+  "9sm5xK": {
+    "longUrl": "http://www.google.com",
+    "userID" : "user2RandomID"
+  }
 };
 
 app.get("/", (req, res) => {
@@ -26,15 +32,16 @@ app.get("/urls.json", (req, res) => {
 });
 
 app.get("/hello", (req, res) => {
-  res.end("<html><body>Hello <b>World</b></body></html>\n");
+  res.end("<html><body><b>Hello</b><b>World</b></body></html>\n");
 });
 
 app.get("/urls", (req, res) => {
   console.log("cookies: ", req.cookies)
-  console.log("users", users)
+  //console.log("users", users)
   //req.cookies.username
+
   let templateVars = {
-    urls: urlDatabase,
+    urls: urlsForUser(req.cookies.user_id),
     //username: req.cookies.username,
     user: users[req.cookies.user_id]
   };
@@ -53,24 +60,44 @@ app.get("/urls/new", (req, res) => {
 app.get("/urls/:id", (req, res) => {
   let templateVars = {
     shortURL: req.params.id,
-    longURL: urlDatabase[req.params.id],
+    longURL: urlDatabase[req.params.id].longUrl,
     user: users[req.cookies.user_id]
   };
+  if (req.cookies.user_id === urlDatabase[req.params.id].userID){
   res.render("urls_show", templateVars);
+  } else {
+    res.status(400).send("You are not allowed to Edit!");
+  }
+
 });
+
+
 
 app.post("/urls", (req, res) => {
   console.log(req.body);  // debug statement to see POST parameters
 
   let shortURL=generateRandomString();
   let longURL=req.body.longURL;
+  //console.log(urlDatabase["shortURL"]);
+  console.log(longURL);
+  urlDatabase[shortURL]= {longUrl:longURL, userID: req.cookies.user_id};
+  res.redirect("/urls/"+shortURL);
+  //let templateVars = { urls: urlDatabase, user: users[req.cookies.user_id]};
+  //res.render("urls_index",templateVars);
 
-  urlDatabase[shortURL]=longURL;
-  let templateVars = { urls: urlDatabase, user: users[req.cookies.user_id]};
-  res.render("urls_index",templateVars);
-
-  res.send("Ok");         // Respond with 'Ok' (we will replace this)
+  //res.send("Ok");         // Respond with 'Ok' (we will replace this)
 });
+
+function urlsForUser(id){
+  var subSet = {} ;
+ for(var key in urlDatabase){
+  if (urlDatabase[key].userID === id) {
+    subSet[key]=urlDatabase[key];
+
+  }
+ }
+ return subSet;
+}
 
 
 // i quote from the "https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript", i use the similar function.
@@ -94,14 +121,17 @@ app.get("/u/:shortURL", (req, res) => {
   // let longURL = ...
   // res.redirect(longURL);
   const shortURL = req.params.shortURL
-  const longURL = urlDatabase[shortURL]
+  const longURL = urlDatabase[shortURL].longUrl
   res.redirect(longURL);
 });
 
 app.post("/urls/:id/delete", (req, res) => {
+  if (req.cookies.user_id === urlDatabase[req.params.id].userID){
   delete urlDatabase[req.params.id];
-  let templateVars = { urls: urlDatabase, user: users[req.cookies.user_id] };
-  res.render("urls_index",templateVars);
+  res.redirect("/urls");
+  } else {
+    res.status(400).send("You are not allowed to delete!");
+  }
 });
 
 app.post("/urls/:id", (req, res) => {
@@ -148,13 +178,13 @@ app.get("/register", (req, res) => {
 const users = {
   "userRandomID": {
     id: "userRandomID",
-    email: "user@example.com",
-    password: "purple-monkey-dinosaur"
+    email: "u@g.ca",
+    password: "p"
   },
  "user2RandomID": {
     id: "user2RandomID",
-    email: "user2@example.com",
-    password: "dishwasher-funk"
+    email: "u2@g.ca",
+    password: "p"
   }
 }
 
