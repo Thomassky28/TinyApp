@@ -4,7 +4,10 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 ## Project Demo
 
+* Register and login feature
 !["Register and login demo"](https://github.com/Thomassky28/TinyApp/blob/master/docs/Register-login.gif)
+
+* Shorten urls feature
 !["Shorten urls demo"](https://github.com/Thomassky28/TinyApp/blob/master/docs/Shorten-urls%20.gif)
 
 
