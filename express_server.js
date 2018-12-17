@@ -3,8 +3,6 @@ var app = express();
 var PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
-//var cookieParser = require('cookie-parser')
-//app.use(cookieParser())
 var cookieSession = require('cookie-session')
 app.use(cookieSession({
     name: 'session',
@@ -14,10 +12,8 @@ app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }))
 const bcrypt = require('bcrypt');
-
-
-
 app.set("view engine", "ejs");
+
 
 var urlDatabase = {
     "b2xVn2": {
@@ -29,11 +25,19 @@ var urlDatabase = {
         "userID": "user2RandomID"
     }
 };
-// urlDatabase['b2xVn2'] === {
-//     "longUrl": "http://www.lighthouselabs.ca",
-//     "userID": "userRandomID"
-// }
-// urlDatabase['a'] === undefined
+
+const users = {
+    "userRandomID": {
+        id: "userRandomID",
+        email: "u@g.ca",
+        password: bcrypt.hashSync('p', 10)
+    },
+    "user2RandomID": {
+        id: "user2RandomID",
+        email: "u2@g.ca",
+        password: bcrypt.hashSync('p', 10)
+    }
+}
 
 app.get("/", (req, res) => {
     res.end("Hello!");
@@ -49,6 +53,17 @@ app.get("/urls.json", (req, res) => {
 app.get("/hello", (req, res) => {
     res.end("<html><body><b>Hello</b><b>World</b></body></html>\n");
 });
+
+function urlsForUser(id) {
+    var subSet = {};
+    for (var key in urlDatabase) {
+        if (urlDatabase[key].userID === id) {
+            subSet[key] = urlDatabase[key];
+
+        }
+    }
+    return subSet;
+}
 
 app.get("/urls", (req, res) => {
     //req.cookies.username
@@ -104,16 +119,7 @@ app.post("/urls", (req, res) => {
 
 });
 
-function urlsForUser(id) {
-    var subSet = {};
-    for (var key in urlDatabase) {
-        if (urlDatabase[key].userID === id) {
-            subSet[key] = urlDatabase[key];
 
-        }
-    }
-    return subSet;
-}
 
 
 // i quote from the "https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript", i use the similar function.
@@ -129,8 +135,7 @@ function generateRandomString() {
 
 
 app.get("/u/:shortURL", (req, res) => {
-    // let longURL = ...
-    // res.redirect(longURL);
+
     const shortURL = req.params.shortURL
     if (urlDatabase[shortURL] === undefined) {
         res.status(403).send("Unvalid URL");
@@ -156,10 +161,15 @@ app.post("/urls/:id", (req, res) => {
     res.redirect("/urls")
 })
 
+//creat a login page
+
+app.get("/login", (req, res) => {
+
+    res.render("login");
+});
+
 app.post("/login", (req, res) => {
     console.log(req.body.email, req.body.password);
-    //console.log(bcrypt.compareSync(req.body.password, users[user].password)); // returns true
-    //bcrypt.compareSync("pink-donkey-minotaur", hashedPassword);
 
     for (var user in users) {
         if (req.body.email === users[user].email && bcrypt.compareSync(req.body.password, users[user].password)) {
@@ -174,8 +184,7 @@ app.post("/login", (req, res) => {
 })
 
 app.post("/logout", (req, res) => {
-    // res.cookie("username", req.body.username, { maxAge: 10* 60 * 1000})
-    //res.clearCookie('user_id');
+
     console.log("post/logout")
     req.session = null;
     res.redirect("/urls")
@@ -187,23 +196,6 @@ app.get("/register", (req, res) => {
     res.render("register");
 });
 
-
-
-// task 3------------------------------------------------------
-const users = {
-    "userRandomID": {
-        id: "userRandomID",
-        email: "u@g.ca",
-        password: bcrypt.hashSync('p', 10)
-    },
-    "user2RandomID": {
-        id: "user2RandomID",
-        email: "u2@g.ca",
-        password: bcrypt.hashSync('p', 10)
-    }
-}
-
-//task 4--------------------------------------------------------
 
 app.post("/register", (req, res) => {
     //console.log(req.body)
@@ -236,19 +228,9 @@ app.post("/register", (req, res) => {
         res.status(400).send("Please provide a non existing email");
     } else {
         users[idPut] = { id: idPut, email: emailPut, password: passwordPut }
-        //console.log(users);
-        //res.cookie("user_id", idPut, { maxAge: 10* 60 * 1000});
         req.session.user_id = idPut;
-
 
         res.redirect("/urls")
     };
 
 })
-//-----------------------------------------------------
-//task 7: creat a login page
-
-app.get("/login", (req, res) => {
-
-    res.render("login");
-});
