@@ -1,9 +1,13 @@
-var express = require("express");
-var app = express();
-var PORT = 8080; // default port 8080
+const express = require("express");
+const app = express();
+const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
+const methodOverride = require('method-override');
+const cookieSession = require('cookie-session');
+const bcrypt = require('bcrypt');
+
+app.use(methodOverride('_method'));
 app.use(bodyParser.urlencoded({ extended: true }));
-var cookieSession = require('cookie-session')
 app.use(cookieSession({
     name: 'session',
     keys: ["tinyapp" /* secret keys */ ],
@@ -11,11 +15,14 @@ app.use(cookieSession({
     // Cookie Options
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }))
-const bcrypt = require('bcrypt');
+
 app.set("view engine", "ejs");
+app.listen(PORT, () => {
+    console.log(`Example app listening on port ${PORT}!`);
+});
 
 
-var urlDatabase = {
+const urlDatabase = {
     "b2xVn2": {
         "longUrl": "http://www.lighthouselabs.ca",
         "userID": "userRandomID"
@@ -43,9 +50,7 @@ app.get("/", (req, res) => {
     res.end("Hello!");
 });
 
-app.listen(PORT, () => {
-    console.log(`Example app listening on port ${PORT}!`);
-});
+
 app.get("/urls.json", (req, res) => {
     res.json(urlDatabase);
 });
@@ -146,7 +151,9 @@ app.get("/u/:shortURL", (req, res) => {
     }
 });
 
-app.post("/urls/:id/delete", (req, res) => {
+
+
+app.delete('/urls/:id', (req, res) => {
     if (req.session.user_id === urlDatabase[req.params.id].userID) {
         delete urlDatabase[req.params.id];
         res.redirect("/urls");
@@ -155,7 +162,8 @@ app.post("/urls/:id/delete", (req, res) => {
     }
 });
 
-app.post("/urls/:id", (req, res) => {
+
+app.put('/urls/:id', (req, res) => {
     const id = req.params.id;
     urlDatabase[id].longUrl = req.body.longURL
     res.redirect("/urls")

@@ -15,7 +15,7 @@
 
           <h3> <%= id %> : <%= urls[id]["longUrl"] %> </h3>
           <a href= "/urls/<%= id %>"> Edit </a>
-          <form method="POST" action="/urls/<%= id %>/delete">
+          <form method="POST" action="/urls/<%= id %>?_method=DELETE">
           <button type = "submit">DELETE</button>
           </form>
 
