@@ -4,15 +4,17 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 ## Project Demo
 
-* Register and login feature
-
-!["Register and login demo"](https://github.com/Thomassky28/TinyApp/blob/master/docs/Register-login.gif)
-
 * Shorten urls feature
 
-!["Shorten urls demo"](https://github.com/Thomassky28/TinyApp/blob/master/docs/Shorten-urls%20.gif)
+!["Shorten urls demo"](https://github.com/Thomassky28/TinyApp/blob/master/docs/Tiny-app-demo.gif)
 
+## Features
 
+Users can
+- create short URLs for any web addresses
+- update long URL with the same short URL
+- delete their short URLs
+- view the created short URLs' lists
 
 ## Dependencies
 
@@ -22,6 +24,7 @@ TinyApp is a full stack web application built with Node and Express that allows 
 - bcrypt
 - body-parser
 - cookie-session
+- method-override
 
 ## Getting Started
 
