@@ -1,17 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-Register
+<title>register</title>
+<% include ./partials/_head %>
 </head>
 
 <body>
 
-
-     <form method="POST" action="/register">
-     email:    <input type= "email" name = "email" >
-     password: <input type= "password" name = "password">
-     <button type = "submit" /> submit</button>
-     </form>
+  <div class='register-div'>
+    <form method="POST" action="/register">
+      <div class="form-group">
+        <label for="exampleInputEmail1" ><h3 id="regisFont">Email address</h3></label>
+          <input type= "email" class="form-control" name = "email" aria-describedby="emailHelp" placeholder="Enter email">
+      </div>
+      <div class="form-group">
+      <label for="exampleInputPassword1"><h3 id="regisFont">Password</h3></label>
+        <input type= "password" name = "password" class="form-control" placeholder="Password">
+      </div>
+      <button type = "submit" class="btn btn-primary" id="regisButton"><h3 id="regisFont">submit</h3></button>
+    </form>
+  </div>
 
 
 </body>

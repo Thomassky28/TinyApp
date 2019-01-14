@@ -7,6 +7,7 @@ const cookieSession = require('cookie-session');
 const bcrypt = require('bcrypt');
 
 app.use(methodOverride('_method'));
+app.use(express.static(__dirname + '/'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieSession({
     name: 'session',

@@ -1,21 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<head>
+  <% include ./_head %>
+</head>
+
 
 <body>
+  <ul class="navbar nav" >
     <% if (user) { %>
 
-        Hello! <%= user.email %>
+        <h3 id="greeting">Hello! <%= user.email %><h3>
         <form method="POST" action="/logout">
-            <input type = "submit" value = "logout" />
+            <input type = "submit" value = "logout" class="form-control" id="logout"/>
         </form>
 
     <% } else { %>
-
-        <a href="/register">Register</a>
-        <a href="/login">Login</a>
-
+      <li class="nav-item">
+        <a class="nav-link" href="/register"><h3 id="navFont">Register</h3></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/login"><h3 id="navFont">Login</h3></a>
+      </li>
     <% } %>
+  </ul>
 </body>
 </html>
 

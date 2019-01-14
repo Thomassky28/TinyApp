@@ -3,26 +3,53 @@
 
   <head>
     <title>TinyApp</title>
+    <% include ./partials/_head %>
   </head>
 
   <body>
     <header>
       <% include ./partials/_header %>
     </header>
-    <ul>
-      <% for ( id in urls ) { %>
-        <li>
+    <div class='container shadow-div' id='table-div'>
+      <div class='table-container'>
+      <p><h1 id="urlList">Your URL Lists</h1></p><br>
+        <table class='table table-bordered'>
+          <thead>
+            <tr>
+              <th id="origi">Original URL</th>
+              <th class='short-td' id="ShortUrl">Short URL</th>
+              <th width='35%' colspan='2'>
 
-          <h3> <%= id %> : <%= urls[id]["longUrl"] %> </h3>
-          <a href= "/urls/<%= id %>"> Edit </a>
-          <form method="POST" action="/urls/<%= id %>?_method=DELETE">
-          <button type = "submit">DELETE</button>
-          </form>
+                <form action='/urls/new' method='GET'>
+                  <button class='btn btn-success btn-sm' type='submit' id="shortenUrl">Shorten New URL</button>
+                </form>
+              </th>
+            </tr>
+          </thead>
 
-        </li>
-      <% }; %>
-    </ul>
-    <a href= "/urls/new"> Shorten the Url </a>
+
+            <% for ( id in urls ) { %>
+            <tbody>
+            <tr>
+              <td><h5><%= urls[id]["longUrl"] %></h5></td>
+              <td><a href= "/u/<%= id %>"> <h4 id="shortU"><%= id %> </h4></a></td>
+              <td>
+                <a href= "/urls/<%= id %>" class="btn btn-info"> Edit </a>
+              </td>
+              <td>
+                <form method="POST" action="/urls/<%= id %>?_method=DELETE">
+                <button type = "submit" class="btn btn-warning" >DELETE</button>
+                </form>
+              </td>
+            </tr>
+            </tbody>
+            <% }; %>
+
+        </table>
+      </div>
+
+    </div>
+
   </body>
 
 </html>

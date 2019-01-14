@@ -11,11 +11,16 @@
     <header>
       <% include ./partials/_header %>
     </header>
-    <h3> ShortURL : <%= shortURL %></h3>
-    <form method="POST" action="/urls/<%= shortURL %>?_method=PUT">
-      <input type= "text" name = "longURL" value= "<%=longURL %>">
-      <input type = "submit" value = "Update" />
-    </form>
+    <div class='register-div'>
+      <h4 id="shorturl"> ShortURL : <%= shortURL %></h4>
+      <form method="POST" action="/urls/<%= shortURL %>?_method=PUT">
+        <div class="form-group">
+          <label id="originalU">Original URL:</label>
+          <input type= "text" name = "longURL" value= "<%=longURL %>" class="form-control">
+        </div>
+        <input type = "submit" value = "Update" class="btn btn-primary" id="updatebutton"/>
+      </form>
+    </div>
   </body>
 
 </html>
