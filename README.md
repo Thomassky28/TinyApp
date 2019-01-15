@@ -14,7 +14,7 @@ Users can
 - create short URLs for any web addresses
 - update long URL with the same short URL
 - delete short URLs
-- view the URLs' lists
+- view URL lists
 
 ## Dependencies
 
